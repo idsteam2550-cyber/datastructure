@@ -1,9 +1,8 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.Queue;
 
-public class TraversePostorder {
+public class TraverseBFS {
 
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
@@ -12,32 +11,34 @@ public class TraversePostorder {
 		System.out.println();
 		System.out.println("Postorder = " + traversal(tree.getRoot()));
 	}
-
+	
 	public static ArrayList<Integer> traversal(Node node) {
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		Deque<Node> stack = new ArrayDeque<Node>();
-		Queue<Integer> queue = new ArrayDeque<Integer>();
 		
-		stack.push(node);
-		
-		while (!stack.isEmpty()) {
-			Node current_node = stack.pop();
-			queue.offer(current_node.data);
-			
-			if (current_node.left != null) {
-				stack.push(current_node.left);
-			}
-			if (current_node.right != null) {
-				stack.push(current_node.right);
-		    }
-			
-			// System.out.println(queue);
+		if (node != null) {
+			Queue<Node> queue = new ArrayDeque<Node>();
+			queue.add(node);
+
 			while (!queue.isEmpty()) {
-				list.addFirst(queue.poll());
+
+				int levelSize = queue.size();
+
+				for (int i = 0; i < levelSize; i++) {
+					Node current_node = queue.poll();
+					list.add(current_node.data);
+
+					if (current_node.left != null) {
+						queue.add(current_node.left);
+					}
+					if (current_node.right != null) {
+						queue.add(current_node.right);
+					}
+				}
+
 			}
-			
+
 		}
 		return list;
 	}
-}
 
+}
